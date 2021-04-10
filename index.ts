@@ -209,3 +209,25 @@ class BallsTraversalLine {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    btl : BallsTraversalLine = new BallsTraversalLine()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.btl.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.btl.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.btl.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
